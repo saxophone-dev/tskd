@@ -24,7 +24,7 @@ function NotFound() {
           </Link>
         </Button>
         
-        <div className="text-xs text-muted-foreground">
+        <div className="text-xs text-muted-foreground -mt-4">
           If you believe this is an error, please 
           <Link to="/contact" className="ml-1 underline">
             contact support

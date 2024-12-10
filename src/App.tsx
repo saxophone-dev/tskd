@@ -6,6 +6,8 @@ import Landing from "./pages/Landing";
 import TermsOfService from "./pages/ToS";
 import PrivacyPolicy from "./pages/PriPol";
 import NotFound from "./pages/NotFound";
+import Contact from "./pages/Contact";
+import { Toaster } from 'react-hot-toast';
 
 function Home() {
   return (
@@ -16,8 +18,10 @@ function Home() {
           <Route index element={<Landing />} />
           <Route path="/tos" element={<TermsOfService />} />
           <Route path="/prp" element={<PrivacyPolicy />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </div>
+      <Toaster />
     </ThemeProvider>
   );
 }
