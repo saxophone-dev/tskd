@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Mail, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { Link } from "react-router";
 
 function Contact() {
   const [email, setEmail] = useState("");
@@ -49,7 +50,8 @@ function Contact() {
           contact us
         </h1>
         <p className="text-muted-foreground mt-2">
-          We'd love to hear from you! Reach out via email or send us your feedback.
+          We'd love to hear from you! Reach out via email or send us your
+          feedback.
         </p>
       </div>
 
@@ -57,7 +59,10 @@ function Contact() {
         <div className="space-y-2">
           <h2 className="text-lg font-semibold">Email Us!</h2>
           <p>
-            📧 <a href="mailto:contact@tskd.us.kg" className="underline">contact@tskd.us.kg</a>
+            📧{" "}
+            <a href="mailto:contact@tskd.us.kg" className="underline">
+              contact@tskd.us.kg
+            </a>
           </p>
         </div>
 
@@ -97,11 +102,14 @@ function Contact() {
       </div>
 
       <div className="text-center text-xs text-muted-foreground">
-        Thank you for reaching out! We'll get back to you as soon as possible from <span className="underline">noreply@tskd.us.kg</span>.
+        Thank you for reaching out! We'll get back to you as soon as possible
+        from <span className="underline">noreply@tskd.us.kg</span>.
+      </div>
+      <div className="text-center text-xs underline">
+        <Link to="/">Go back?</Link>
       </div>
     </div>
   );
 }
 
 export default Contact;
-

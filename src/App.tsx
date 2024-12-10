@@ -7,7 +7,7 @@ import TermsOfService from "./pages/ToS";
 import PrivacyPolicy from "./pages/PriPol";
 import NotFound from "./pages/NotFound";
 import Contact from "./pages/Contact";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 
 function Home() {
   return (

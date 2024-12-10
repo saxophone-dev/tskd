@@ -125,12 +125,13 @@ function Landing() {
       <div className="text-center text-xs text-muted-foreground">
         By continuing, you agree to our{" "}
         <Link to="/tos" className="underline">
-          Terms of Service
+          terms of service
         </Link>{" "}
         and{" "}
         <Link to="/prp" className="underline">
-          Privacy Policy
+          privacy policy
         </Link>
+        . For any furthur inquiries, <Link to="/contact" className="underline">contact us</Link>.
       </div>
     </div>
   );
