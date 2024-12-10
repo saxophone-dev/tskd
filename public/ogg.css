@@ -1,0 +1,193 @@
+/* Ogg Font Definitions */
+
+/* Thin */
+@font-face {
+    font-family: "Ogg";
+    font-weight: 100;
+    font-style: normal;
+    src:
+        url("Ogg-Thin-BF646c18fc4eb07.otf") format("opentype"),
+        url("Ogg-Thin-BF646c18fc48f66.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Ogg";
+    font-weight: 100;
+    font-style: italic;
+    src:
+        url("Ogg-ThinItalic-BF646c18fc4cb44.otf") format("opentype"),
+        url("Ogg-ThinItalic-BF646c18fc568b1.ttf") format("truetype");
+}
+
+/* Light */
+@font-face {
+    font-family: "Ogg";
+    font-weight: 300;
+    font-style: normal;
+    src:
+        url("Ogg-Light-BF646c18fbb73f7.otf") format("opentype"),
+        url("Ogg-Light-BF646c18fc54ff4.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Ogg";
+    font-weight: 300;
+    font-style: italic;
+    src:
+        url("Ogg-LightItalic-BF646c18fc3aa5c.ttf") format("opentype"),
+        url("Ogg-LightItalic-BF646c18fc49421.otf") format("truetype");
+}
+
+/* Regular */
+@font-face {
+    font-family: "Ogg";
+    font-weight: 400;
+    font-style: normal;
+    src:
+        url("Ogg-Regular-BF646c18fc3ed57.otf") format("opentype"),
+        url("Ogg-Regular-BF646c18fc465e5.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Ogg";
+    font-weight: 400;
+    font-style: italic;
+    src:
+        url("Ogg-RegularItalic-BF646c18fc4f575.ttf") format("opentype"),
+        url("Ogg-RegularItalic-BF646c18fc462a5.otf") format("truetype");
+}
+
+/* Medium */
+@font-face {
+    font-family: "Ogg";
+    font-weight: 500;
+    font-style: normal;
+    src:
+        url("Ogg-Medium-BF646c18fc4e918.otf") format("opentype"),
+        url("Ogg-Medium-BF646c18fc45bd0.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Ogg";
+    font-weight: 500;
+    font-style: italic;
+    src:
+        url("Ogg-MediumItalic-BF646c18fc5658d.ttf") format("opentype"),
+        url("Ogg-MediumItalic-BF646c18fc56520.otf") format("truetype");
+}
+
+/* Bold */
+@font-face {
+    font-family: "Ogg";
+    font-weight: 700;
+    font-style: normal;
+    src:
+        url("Ogg-Bold-BF646c18fc4aa63.otf") format("opentype"),
+        url("Ogg-Bold-BF646c18fc530f4.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Ogg";
+    font-weight: 700;
+    font-style: italic;
+    src:
+        url("Ogg-BoldItalic-BF646c18fbc870f.otf") format("opentype"),
+        url("Ogg-BoldItalic-BF646c18fc5163c.ttf") format("truetype");
+}
+
+/* Ogg Text Variants */
+
+/* Book */
+@font-face {
+    font-family: "Ogg Text";
+    font-weight: 400;
+    font-style: normal;
+    src:
+        url("OggText-Book-BF646c18fc3d930.otf") format("opentype"),
+        url("OggText-Book-BF646c18fc52250.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Ogg Text";
+    font-weight: 400;
+    font-style: italic;
+    src:
+        url("OggText-BookItalic-BF646c18fc41689.ttf") format("opentype"),
+        url("OggText-BookItalic-BF646c18fc59038.otf") format("truetype");
+}
+
+/* Light */
+@font-face {
+    font-family: "Ogg Text";
+    font-weight: 300;
+    font-style: normal;
+    src:
+        url("OggText-Light-BF646c18fa863ce.otf") format("opentype"),
+        url("OggText-Light-BF646c18fc42daf.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Ogg Text";
+    font-weight: 300;
+    font-style: italic;
+    src:
+        url("OggText-LightItalic-BF646c18fbe0db9.otf") format("opentype"),
+        url("OggText-LightItalic-BF646c18fc3f9a1.ttf") format("truetype");
+}
+
+/* Medium */
+@font-face {
+    font-family: "Ogg Text";
+    font-weight: 500;
+    font-style: normal;
+    src:
+        url("OggText-Medium-BF646c18fbe3cb2.otf") format("opentype"),
+        url("OggText-Medium-BF646c18fc42ea3.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Ogg Text";
+    font-weight: 500;
+    font-style: italic;
+    src:
+        url("OggText-MediumItalic-BF646c18fc0d1ec.otf") format("opentype"),
+        url("OggText-MediumItalic-BF646c18fc540be.ttf") format("truetype");
+}
+
+/* Bold */
+@font-face {
+    font-family: "Ogg Text";
+    font-weight: 700;
+    font-style: normal;
+    src:
+        url("OggText-Bold-BF646c18fc4aabb.ttf") format("opentype"),
+        url("OggText-Bold-BF646c18fc4da85.otf") format("truetype");
+}
+
+@font-face {
+    font-family: "Ogg Text";
+    font-weight: 700;
+    font-style: italic;
+    src:
+        url("OggText-BoldItalic-BF646c18fc41b7d.ttf") format("opentype"),
+        url("OggText-BoldItalic-BF646c18fc47702.otf") format("truetype");
+}
+
+/* Extra Bold */
+@font-face {
+    font-family: "Ogg Text";
+    font-weight: 800;
+    font-style: normal;
+    src:
+        url("OggText-Extrabold-BF646c18fc4bcfe.ttf") format("opentype"),
+        url("OggText-Extrabold-BF646c18fc56511.otf") format("truetype");
+}
+
+@font-face {
+    font-family: "Ogg Text";
+    font-weight: 800;
+    font-style: italic;
+    src:
+        url("OggText-ExtraboldItalic-BF646c18fc4a079.ttf") format("opentype"),
+        url("OggText-ExtraboldItalic-BF646c18fc22d99.otf") format("truetype");
+}
