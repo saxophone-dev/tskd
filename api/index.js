@@ -1,8 +1,10 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 // Middleware to parse JSON
 app.use(express.json());
+app.use(cors());
 
 // POST endpoint for /api/feedback
 app.post('/api/feedback', (req, res) => {
