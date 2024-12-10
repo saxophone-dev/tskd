@@ -131,7 +131,11 @@ function Landing() {
         <Link to="/prp" className="underline">
           privacy policy
         </Link>
-        . For any furthur inquiries, <Link to="/contact" className="underline">contact us</Link>.
+        . For any furthur inquiries,{" "}
+        <Link to="/contact" className="underline">
+          contact us
+        </Link>
+        .
       </div>
     </div>
   );
