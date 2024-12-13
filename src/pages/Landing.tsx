@@ -39,13 +39,24 @@ function Landing() {
       const data = await response.json();
 
       if (response.ok) {
-        toast.success(data.message);
+        toast({
+          title: "Submitted successfully!",
+          description: data.message,
+        });
         // Here you might want to redirect the user or update the app state
       } else {
-        toast.error(data.message);
+        toast({
+          title: "Whoops!",
+          description: data.message || "Failed to send responses.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.");
+      toast({
+        title: "Whoops!",
+        description: "Failed to send responses.",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -135,7 +146,10 @@ function Landing() {
           privacy policy
         </Link>
         . For any furthur inquiries,{" "}
-        <ContactDialog child={<span className="underline cursor-pointer">contact us</span>} />.
+        <ContactDialog
+          child={<span className="underline cursor-pointer">contact us</span>}
+        />
+        .
       </div>
     </div>
   );
