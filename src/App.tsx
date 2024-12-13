@@ -1,13 +1,11 @@
 "use client";
 
-import { ThemeProvider } from "./components/theme-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 import { Routes, Route } from "react-router";
-import Landing from "./pages/Landing";
-import TermsOfService from "./pages/ToS";
-import PrivacyPolicy from "./pages/PriPol";
-import NotFound from "./pages/NotFound";
-import Contact from "./pages/Contact";
-import { Toaster } from "react-hot-toast";
+import Landing from "@/pages/Landing";
+import TermsOfService from "@/pages/ToS";
+import PrivacyPolicy from "@/pages/PriPol";
+import NotFound from "@/pages/NotFound";
 
 function Home() {
   return (
@@ -18,10 +16,8 @@ function Home() {
           <Route index element={<Landing />} />
           <Route path="/tos" element={<TermsOfService />} />
           <Route path="/prp" element={<PrivacyPolicy />} />
-          <Route path="/contact" element={<Contact />} />
         </Routes>
       </div>
-      <Toaster />
     </ThemeProvider>
   );
 }

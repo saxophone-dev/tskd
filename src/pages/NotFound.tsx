@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ContactDialog } from "@/components/Contact"
 import { Link } from "react-router";
 import { AlertTriangle } from "lucide-react";
 
@@ -15,19 +16,17 @@ function NotFound() {
       <h1 className="text-5xl font-logo font-bold tracking-wide">not found</h1>
 
       <p className="text-muted-foreground text-lg">
-        Oops! The page you're looking for seems to have wandered off.
+        Oops! The page you're looking for seems to have disappeared.
       </p>
 
-      <div className="space-y-4">
-        <Button asChild className="w-full">
-          <Link to="/">Return to Home</Link>
+      <div className="">
+        <Button asChild className="w-full mb-6">
+          <Link to="/">Go back?</Link>
         </Button>
 
         <div className="text-xs text-muted-foreground -mt-4">
           If you believe this is an error, please
-          <Link to="/contact" className="ml-1 underline">
-            contact support
-          </Link>
+          <ContactDialog child={<span className="ml-1 underline cursor-pointer">contact support</span>} />.
         </div>
       </div>
     </div>

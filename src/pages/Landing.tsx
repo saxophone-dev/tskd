@@ -6,7 +6,8 @@ import { Label } from "@/components/ui/label";
 import { User, Mail, Lock, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
-import { toast } from "react-hot-toast";
+import { useToast } from "@/hooks/use-toast";
+import ContactDialog from "@/components/Contact";
 
 function Landing() {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,6 +15,8 @@ function Landing() {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,10 +135,7 @@ function Landing() {
           privacy policy
         </Link>
         . For any furthur inquiries,{" "}
-        <Link to="/contact" className="underline">
-          contact us
-        </Link>
-        .
+        <ContactDialog child={<span className="underline cursor-pointer">contact us</span>} />.
       </div>
     </div>
   );
