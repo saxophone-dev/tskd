@@ -10,7 +10,6 @@ import {
   HelpCircle,
 } from "lucide-react";
 import { useState, useCallback, useRef } from "react";
-import { Link } from "react-router";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -22,6 +21,8 @@ import {
 import ContactDialog from "@/components/Contact";
 import { motion, AnimatePresence } from "motion/react";
 import zxcvbn from "zxcvbn";
+import PriPol from "@/components/PriPol";
+import TermsOfService from "@/components/ToS";
 
 // Constants
 const MIN_PASSWORD_STRENGTH = 3;
@@ -345,17 +346,30 @@ function Landing() {
           role="contentinfo"
         >
           By continuing, you agree to our{" "}
-          <Link to="/tos" className="underline" aria-label="Terms of Service">
-            terms of service
-          </Link>{" "}
+          <TermsOfService
+            child={
+              <button className="underline" aria-label="Terms of Service">
+                terms of service
+              </button>
+            }
+          />{" "}
           and{" "}
-          <Link to="/prp" className="underline" aria-label="Privacy Policy">
-            privacy policy
-          </Link>
+          <PriPol
+            child={
+              <button className="underline" aria-label="Privacy Policy">
+                privacy policy
+              </button>
+            }
+          />
           . For any further inquiries,{" "}
           <ContactDialog
             child={
-              <button className="underline cursor-pointer" aria-label="Contact Us">contact us</button>
+              <button
+                className="underline cursor-pointer"
+                aria-label="Contact Us"
+              >
+                contact us
+              </button>
             }
           />
           .

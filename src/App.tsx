@@ -3,8 +3,6 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import { Routes, Route } from "react-router";
 import Landing from "@/pages/Landing";
-import TermsOfService from "@/pages/ToS";
-import PrivacyPolicy from "@/pages/PriPol";
 import NotFound from "@/pages/NotFound";
 
 function Home() {
@@ -14,8 +12,6 @@ function Home() {
         <Routes>
           <Route path="*" element={<NotFound />} />
           <Route index element={<Landing />} />
-          <Route path="/tos" element={<TermsOfService />} />
-          <Route path="/prp" element={<PrivacyPolicy />} />
         </Routes>
       </div>
     </ThemeProvider>
