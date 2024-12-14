@@ -10,7 +10,7 @@ function PriPol({ child }: { child: React.ReactNode }) {
   return (
     <Dialog>
       <DialogTrigger asChild>{child}</DialogTrigger>
-      <DialogContent className="max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] overflow-y-auto" aria-describedby="privacypolicy-dialog-description">
         <DialogHeader>
           <DialogTitle className="text-4xl font-logo">
             privacy policy.
