@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ContactDialog } from "@/components/Contact"
+import { ContactDialog } from "@/components/Contact";
 import { Link } from "react-router";
 import { AlertTriangle } from "lucide-react";
 
@@ -26,7 +26,14 @@ function NotFound() {
 
         <div className="text-xs text-muted-foreground -mt-4">
           If you believe this is an error, please
-          <ContactDialog child={<span className="ml-1 underline cursor-pointer">contact support</span>} />.
+          <ContactDialog
+            child={
+              <span className="ml-1 underline cursor-pointer">
+                contact support
+              </span>
+            }
+          />
+          .
         </div>
       </div>
     </div>
