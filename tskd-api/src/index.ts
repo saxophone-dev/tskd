@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import { jwt } from 'hono/jwt'
+import { decode, sign, verify } from 'hono/jwt'
 import { cors } from 'hono/cors'
 
 type Bindings = {
@@ -30,7 +30,7 @@ const authenticateToken = async (c: any, next: any) => {
   }
 
   try {
-    const payload = await jwt.verify(token, c.env.JWT_SECRET)
+    const payload = await verify(token, c.env.JWT_SECRET)
     c.set('user', payload)
     await next()
   } catch {
@@ -40,7 +40,7 @@ const authenticateToken = async (c: any, next: any) => {
 
 // Token Generation
 const generateAccessToken = (user: Partial<User>, secret: string) =>
-  jwt.sign({
+  sign({
     id: user.id,
     email: user.email
   }, secret, {
