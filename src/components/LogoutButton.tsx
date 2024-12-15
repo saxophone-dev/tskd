@@ -24,9 +24,7 @@ function LogoutButton() {
     setIsLoading(true);
     try {
       await logout();
-      setTimeout(() => {
-        navigate("/");
-      }, 200);
+      navigate("/");
     } catch (error) {
       // Optional: handle logout error
       console.error("Logout failed", error);

@@ -168,24 +168,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const logout = () => {
-    const performLogout = async () => {
-      try {
-        // Attempt to invalidate the refresh token on the server
-        const tokens = getTokens();
-        if (tokens?.refreshToken) {
-          await api.post("/auth/logout", { refreshToken: tokens.refreshToken });
-        }
-      } catch (error) {
-        console.error("Logout error:", error);
-      } finally {
-        // Clear local state regardless of server response
-        setUser(null);
-        removeTokens();
+  const logout = async () => {
+    try {
+      // Attempt to invalidate the refresh token on the server
+      const tokens = getTokens();
+      if (tokens?.refreshToken) {
+        await api.post("/auth/logout", { refreshToken: tokens.refreshToken });
       }
-    };
-
-    performLogout();
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      // Clear local state regardless of server response
+      setUser(null);
+      removeTokens();
+    }
   };
 
   if (loading) {
