@@ -66,7 +66,7 @@ app.post('/auth/signup', async (c) => {
   if (results.length > 0) {
     return c.json({ error: 'User already exists' }, 400)
   }
-  const hashedPassword = await hash(password)
+  const hashedPassword = await hash(password, 10)
   const userId = crypto.randomUUID()
   await c.env.DB.prepare(
     'INSERT INTO users (id, email, username, password) VALUES (?, ?, ?, ?)'
