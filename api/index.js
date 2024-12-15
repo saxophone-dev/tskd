@@ -9,7 +9,10 @@ const app = express();
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "http://localhost:1420", // Replace with your frontend's URL
+    origin:
+      process.env.RENDER === "true"
+        ? "https://tskd.us.kg"
+        : "http://localhost:1420", // Replace with your frontend's URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }),

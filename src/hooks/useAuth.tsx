@@ -46,7 +46,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Setup axios instance with interceptors
   const api = axios.create({
-    baseURL: "http://localhost:3000", // Your API base URL
+    baseURL: import.meta.env.PROD
+      ? "https://tskd.onrender.com"
+      : "http://localhost:3000",
     headers: {
       "Content-Type": "application/json",
     },
