@@ -45,9 +45,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Setup axios instance with interceptors
   const api = axios.create({
-    baseURL: "https://tskd-api.itsarchit.workers.dev/"
+    baseURL: "https://tskd-api.itsarchit.workers.dev/",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
   });
 
