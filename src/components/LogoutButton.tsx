@@ -21,10 +21,11 @@ function LogoutButton() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       await logout();
       navigate("/");
+      setIsLoading(false);
     } catch (error) {
       // Optional: handle logout error
       console.error("Logout failed", error);
