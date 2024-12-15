@@ -174,6 +174,8 @@ app.post("/api/feedback", async (req, res) => {
       return res
         .status(response.status)
         .json({ error: error.message || "Failed to send feedback to Sheety." });
+
+      console.log(response);
     }
 
     const data = await response.json();
