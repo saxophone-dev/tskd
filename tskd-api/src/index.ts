@@ -42,10 +42,9 @@ const authenticateToken = async (c: any, next: any) => {
 const generateAccessToken = (user: Partial<User>, secret: string) =>
   sign({
     id: user.id,
-    email: user.email
-  }, secret, {
-    expiresIn: '15m'
-  })
+    email: user.email,
+    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 // 1 day
+  }, secret)
 
 // Signup Route
 app.post('/auth/signup', async (c) => {
