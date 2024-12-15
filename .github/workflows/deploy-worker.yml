@@ -33,5 +33,5 @@ jobs:
       # Step 5: Deploy using wrangler
       - name: Deploy to Cloudflare Workers
         working-directory: ./tskd-api
-        run: pnpm wrangler deploy
+        run: pnpx wrangler deploy
 
