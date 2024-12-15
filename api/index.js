@@ -141,7 +141,7 @@ app.get("/api/protected", authenticateToken, (req, res) => {
 });
 
 // Feedback endpoint
-app.post("/api/feedback", (req, res) => {
+app.post("/api/feedback", async (req, res) => {
   const { email, message } = req.body;
 
   if (!email || !message) {
@@ -150,12 +150,38 @@ app.post("/api/feedback", (req, res) => {
       .json({ error: "Both 'email' and 'message' are required." });
   }
 
-  res.json({
-    received: {
+  const url =
+    "https://api.sheety.co/2870e9315faaeee780eaf2deae61d926/tskdFeedback/feedback";
+  const body = {
+    feedback: {
       email,
       message,
     },
-  });
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.SHEETY_SECRET}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      return res
+        .status(response.status)
+        .json({ error: error.message || "Failed to send feedback to Sheety." });
+    }
+
+    const data = await response.json();
+    res.json({ success: true, feedback: data.feedback });
+  } catch (err) {
+    console.error("Error sending feedback to Sheety:", err);
+    res.status(500).json({ error: "Internal server error." });
+  }
 });
 
 // Start the server
