@@ -97,5 +97,37 @@ app.post("/auth/logout", async (c) => {
   return c.json({ success: true });
 });
 
+// Feedback Route
+app.post('/api/feedback', async (c) => {
+  const { email, message } = await c.req.json()
+  if (!email || !message) {
+    return c.json({ error: "Both 'email' and 'message' are required" }, 400)
+  }
+  const sheetyUrl =
+    'https://api.sheety.co/2870e9315faaeee780eaf2deae61d926/tskdFeedback/feedback'
+  try {
+    const response = await fetch(sheetyUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Bearer ${c.env.SHEETY_SECRET}
+      },
+      body: JSON.stringify({
+        feedback: { email, message }
+      })
+    })
+    if (!response.ok) {
+      const error = await response.json()
+      return c.json({
+        error: error.message || 'Failed to send feedback'
+      }, response.status)
+    }
+    const data = await response.json()
+    return c.json({ success: true, feedback: data.feedback })
+  } catch (err) {
+    return c.json({ error: 'Internal server error' }, 500)
+  }
+})
+
 export default app;
 
