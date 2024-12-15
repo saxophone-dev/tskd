@@ -19,11 +19,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '23' # Match your project's Node.js version
-          cache: 'pnpm'
 
-      # Step 3: Install pnpm
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: pnpm-setup
+        uses: pnpm/action-setup@v2
 
       # Step 4: Install dependencies
       - name: Install dependencies
