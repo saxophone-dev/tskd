@@ -35,5 +35,5 @@ jobs:
         working-directory: ./tskd-api
         env:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-        run: pnpm wrangler publish
+        run: pnpm wrangler deploy
 
