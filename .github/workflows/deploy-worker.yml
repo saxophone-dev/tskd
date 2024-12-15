@@ -1,0 +1,39 @@
+name: Deploy Cloudflare Worker
+
+on:
+  push:
+    branches:
+      - trunk
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '23'
+
+      # Step 3: Install pnpm
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        working-directory: ./tskd-api
+        run: pnpm install
+
+      # Step 5: Deploy using wrangler
+      - name: Deploy to Cloudflare Workers
+        working-directory: ./tskd-api
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: pnpm wrangler publish
+
