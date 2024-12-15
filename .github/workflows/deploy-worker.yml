@@ -22,6 +22,8 @@ jobs:
 
       - name: pnpm-setup
         uses: pnpm/action-setup@v2
+        with:
+          version: "9.14.4"
 
       # Step 4: Install dependencies
       - name: Install dependencies
