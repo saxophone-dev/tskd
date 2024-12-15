@@ -1,8 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
-
 const app = express();
 
 // Middleware
@@ -23,8 +23,12 @@ const users = [];
 let refreshTokens = [];
 
 // Secret keys (use environment variables in production)
-const ACCESS_TOKEN_SECRET = "your_access_token_secret";
-const REFRESH_TOKEN_SECRET = "your_refresh_token_secret";
+const ACCESS_TOKEN_SECRET =
+  process.env.ACCESS_TOKEN_SECRET ||
+  "thisJWTsecretaintBigEnoughForTheBothOfUs123!@#6942069";
+const REFRESH_TOKEN_SECRET =
+  process.env.REFRESH_TOKEN_SECRET ||
+  "IMNotExpiredYetButThanksForCheckingHaha123!6942069";
 
 // Helper functions
 const generateAccessToken = (user) => {
