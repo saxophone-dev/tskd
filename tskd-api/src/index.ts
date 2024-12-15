@@ -110,7 +110,7 @@ app.post('/api/feedback', async (c) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': Bearer ${c.env.SHEETY_SECRET}
+        'Authorization': `Bearer ${c.env.SHEETY_SECRET}`
       },
       body: JSON.stringify({
         feedback: { email, message }
