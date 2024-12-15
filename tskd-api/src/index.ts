@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { decode, sign, verify } from 'hono/jwt'
 import { cors } from 'hono/cors'
-import bcrypt from 'bcrypt'
+import { hash, compare, genSalt } from '@node-rs/bcrypt'
 
 type Bindings = {
   DB: D1Database
@@ -66,7 +66,7 @@ app.post('/auth/signup', async (c) => {
   if (results.length > 0) {
     return c.json({ error: 'User already exists' }, 400)
   }
-  const hashedPassword = await bcrypt.hash(password, 10)
+  const hashedPassword = await hash(password, 10)
   const userId = crypto.randomUUID()
   await c.env.DB.prepare(
     'INSERT INTO users (id, email, username, password) VALUES (?, ?, ?, ?)'
@@ -90,7 +90,7 @@ app.post('/auth/login', async (c) => {
     return c.json({ error: 'Invalid email or password' }, 401)
   }
   const user = results[0]
-  const isPasswordValid = await bcrypt.compare(password, user.password)
+  const isPasswordValid = await compare(password, user.password)
   if (!isPasswordValid) {
     return c.json({ error: 'Invalid email or password' }, 401)
   }
