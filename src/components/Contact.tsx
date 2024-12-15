@@ -36,7 +36,7 @@ interface ContactDialogProps {
 
 export function ContactDialog({
   child,
-  apiEndpoint = "https://tskd.onrender.com/api/feedback",
+  apiEndpoint = "https://tskd-api.itsarchit.pages.dev/api/feedback",
 }: ContactDialogProps) {
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<string>("");

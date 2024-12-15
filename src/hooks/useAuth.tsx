@@ -6,7 +6,6 @@ interface User {
   id: string;
   email: string;
   username: string;
-  // Add other user properties as needed
 }
 
 interface AuthTokens {
@@ -46,9 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Setup axios instance with interceptors
   const api = axios.create({
-    baseURL: import.meta.env.PROD
-      ? "https://tskd.onrender.com"
-      : "http://localhost:3000",
+    baseURL: "https://tskd-api.itsarchit.workers.dev/"
     headers: {
       "Content-Type": "application/json",
     },
