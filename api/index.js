@@ -12,7 +12,7 @@ app.use(
     origin:
       process.env.RENDER === "true"
         ? "https://tskd.us.kg"
-        : "http://localhost:1420", // Replace with your frontend's URL
+        : "http://localhost:1420", // dev
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }),
@@ -184,6 +184,10 @@ app.post("/api/feedback", async (req, res) => {
     console.error("Error sending feedback to Sheety:", err);
     res.status(500).json({ error: "Internal server error." });
   }
+});
+
+app.get("/", (req, res) => {
+  res.send("Hi! This is the tskd API running on render.com!");
 });
 
 // Start the server
