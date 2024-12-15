@@ -9,7 +9,7 @@ import {
   AlertCircle,
   HelpCircle,
 } from "lucide-react";
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -23,6 +23,8 @@ import { motion, AnimatePresence } from "motion/react";
 import zxcvbn from "zxcvbn";
 import PriPol from "@/components/PriPol";
 import TermsOfService from "@/components/ToS";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router";
 
 // Constants
 const MIN_PASSWORD_STRENGTH = 3;
@@ -56,6 +58,8 @@ function Landing() {
   const [passwordStrengthInfo, setPasswordStrengthInfo] =
     useState<PasswordStrengthInfo | null>(null);
   const [isPasswordInfoOpen, setIsPasswordInfoOpen] = useState(false);
+  const { login, signup, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   // Rate Limiting Ref
   const rateLimitRef = useRef<RateLimitState>({
@@ -93,6 +97,12 @@ function Landing() {
     };
     return true;
   }, [toast]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate]);
 
   // Validate email format
   const validateEmail = (emailToValidate: string): boolean => {
@@ -150,7 +160,6 @@ function Landing() {
     setIsLoading(true);
 
     try {
-      // Validate fields before submission
       const isEmailValid = validateEmail(email);
       const isPasswordValid = validatePassword(password);
       const isUsernameValid = !isLogin ? username.trim().length > 0 : true;
@@ -160,38 +169,23 @@ function Landing() {
         return;
       }
 
-      const endpoint = isLogin ? "/api/login" : "/api/signup";
-      const payload = isLogin
-        ? { email, password }
-        : { email, password, username };
-
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast({
-          title: "Submitted successfully!",
-          description: data.message,
-        });
-        // Here you might want to redirect the user or update the app state
+      if (isLogin) {
+        await login(email, password);
       } else {
-        toast({
-          title: "Whoops!",
-          description: data.message || "Failed to send responses.",
-          variant: "destructive",
-        });
+        await signup(email, password, username);
       }
+
+      toast({
+        title: "Success!",
+        description: isLogin
+          ? "Logged in successfully!"
+          : "Account created successfully!",
+      });
     } catch (error) {
       toast({
-        title: "Whoops!",
-        description: "Failed to send responses.",
+        title: "Error",
+        description:
+          error instanceof Error ? error.message : "An error occurred",
         variant: "destructive",
       });
     } finally {
