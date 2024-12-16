@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
 interface User {
@@ -35,15 +34,16 @@ const removeAccessToken = () => {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const api = axios.create({
     baseURL: "https://tskd-api.itsarchit.workers.dev/",
     headers: {
       "Content-Type": "application/json",
     },
+    withCredentials: true,
   });
 
-  // Add request interceptor to attach access token
   api.interceptors.request.use(
     (config) => {
       const token = getAccessToken();
@@ -55,7 +55,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     (error) => Promise.reject(error)
   );
 
-  // Add response interceptor to handle token refresh
   api.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -83,16 +82,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      const token = getAccessToken();
-      if (token) {
-        try {
-          const decoded = jwtDecode<User>(token);
-          setUser(decoded);
-        } catch {
-          removeAccessToken();
+      try {
+        const response = await api.get("/auth/is-authenticated");
+        setIsAuthenticated(response.data.isAuthenticated);
+
+        if (response.data.isAuthenticated) {
+          const token = getAccessToken();
+          if (token) {
+            const decoded = jwtDecode<User>(token);
+            setUser(decoded);
+          }
         }
+      } catch {
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     initializeAuth();
@@ -100,11 +105,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await api.post("/auth/login", { email, password }, { withCredentials: true });
+      const response = await api.post("/auth/login", { email, password });
       const { accessToken, user: userData } = response.data;
 
       setAccessToken(accessToken);
       setUser(userData);
+      setIsAuthenticated(true);
     } catch (error) {
       throw new Error("Login failed. Please check your credentials.");
     }
@@ -112,11 +118,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signup = async (email: string, password: string, username: string) => {
     try {
-      const response = await api.post("/auth/signup", { email, password, username }, { withCredentials: true });
+      const response = await api.post("/auth/signup", { email, password, username });
       const { accessToken, user: userData } = response.data;
 
       setAccessToken(accessToken);
       setUser(userData);
+      setIsAuthenticated(true);
     } catch (error) {
       throw new Error("Signup failed. Email might already be in use.");
     }
@@ -124,12 +131,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     try {
-      await api.post("/auth/logout", {}, { withCredentials: true });
+      await api.post("/auth/logout");
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
       setUser(null);
       removeAccessToken();
+      setIsAuthenticated(false);
     }
   };
 
@@ -138,7 +146,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );

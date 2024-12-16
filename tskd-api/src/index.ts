@@ -66,19 +66,17 @@ app.post("/auth/signup", async (c) => {
 
 // Helper function to test CHIPS support
 function isBrowserVersionSupported(userAgent) {
-  // Define browser regex patterns and minimum versions
   const browsers = [
-    { name: "Chrome", regex: /Chrome\/([0-9]+)/, minVersion: 114 },
-    { name: "Edge", regex: /Edg\/([0-9]+)/, minVersion: 114 },
-    { name: "Firefox", regex: /Firefox\/([0-9]+)/, minVersion: 131 },
-    { name: "Opera", regex: /OPR\/([0-9]+)/, minVersion: 100 },
-    { name: "Chrome Android", regex: /Chrome\/([0-9]+).*Android/, minVersion: 114 },
-    { name: "Firefox Android", regex: /Firefox\/([0-9]+).*Android/, minVersion: 131 },
-    { name: "Opera Android", regex: /OPR\/([0-9]+).*Android/, minVersion: 74 },
-    { name: "Samsung Internet", regex: /SamsungBrowser\/([0-9.]+)/, minVersion: 23.0 }
+    { name: "Chrome", regex: /Chrome\/(\d+)/, minVersion: 114 },
+    { name: "Edge", regex: /Edg\/(\d+)/, minVersion: 114 },
+    { name: "Firefox", regex: /Firefox\/(\d+)/, minVersion: 131 },
+    { name: "Opera", regex: /OPR\/(\d+)/, minVersion: 100 },
+    { name: "Chrome Android", regex: /Chrome\/(\d+).*Android/, minVersion: 114 },
+    { name: "Firefox Android", regex: /Firefox\/(\d+).*Android/, minVersion: 131 },
+    { name: "Opera Android", regex: /OPR\/(\d+).*Android/, minVersion: 74 },
+    { name: "Samsung Internet", regex: /SamsungBrowser\/(\d+\.\d+)/, minVersion: 23.0 }
   ];
 
-  // Check the user agent against each browser
   for (const browser of browsers) {
     const match = userAgent.match(browser.regex);
     if (match) {
@@ -87,7 +85,6 @@ function isBrowserVersionSupported(userAgent) {
     }
   }
 
-  // If no matching browser is found, return false
   return false;
 }
 
@@ -160,5 +157,17 @@ app.post("/api/feedback", async (c) => {
   }
 });
 
-export default app;
+// Is Authenticated Route
+app.get("/auth/is-authenticated", async (c) => {
+  const refreshToken = c.req.cookie("refreshToken");
+  if (!refreshToken) return c.json({ isAuthenticated: false });
 
+  try {
+    await verify(refreshToken, c.env.REFRESH_SECRET);
+    return c.json({ isAuthenticated: true });
+  } catch {
+    return c.json({ isAuthenticated: false });
+  }
+});
+
+export default app;
