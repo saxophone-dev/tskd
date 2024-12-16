@@ -58,7 +58,7 @@ app.post("/auth/signup", async (c) => {
   const accessToken = generateToken({ id: userId, email }, c.env.JWT_SECRET, 86400);
   const refreshToken = generateToken({ id: userId, email }, c.env.REFRESH_SECRET, 604800);
 
-  c.header("Set-Cookie", `refreshToken=${refreshToken}; HttpOnly; Secure; SameSite=None`);
+  c.header("Set-Cookie", `refreshToken=${refreshToken}; HttpOnly; Secure; Partitioned; SameSite=None`);
   return c.json({ accessToken, user: { id: userId, email, username } });
 });
 
@@ -74,7 +74,7 @@ app.post("/auth/login", async (c) => {
   const accessToken = generateToken({ id: user.id, email }, c.env.JWT_SECRET, 86400);
   const refreshToken = generateToken({ id: user.id, email }, c.env.REFRESH_SECRET, 604800);
 
-  c.header("Set-Cookie", `refreshToken=${refreshToken}; HttpOnly; Secure; SameSite=None`);
+  c.header("Set-Cookie", `refreshToken=${refreshToken}; HttpOnly; Secure; Partitioned; SameSite=None`);
   return c.json({ accessToken, user: { id: user.id, email, username: user.username } });
 });
 
@@ -94,7 +94,7 @@ app.post("/auth/refresh", async (c) => {
 
 // Logout Route
 app.post("/auth/logout", async (c) => {
-  c.header("Set-Cookie", "refreshToken=; HttpOnly; Secure; SameSite=None; Max-Age=0");
+  c.header("Set-Cookie", "refreshToken=; HttpOnly; Secure; Partitioned; SameSite=None; Max-Age=0");
   return c.json({ success: true });
 });
 
