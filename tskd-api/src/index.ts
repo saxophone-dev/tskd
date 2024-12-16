@@ -7,6 +7,7 @@ type Bindings = {
   DB: D1Database;
   JWT_SECRET: string;
   REFRESH_SECRET: string;
+  SHEETY_SECRET: string;
 };
 
 type User = {
@@ -18,15 +19,15 @@ type User = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-// Middleware
-app.use("*", cors());
+// Middleware: CORS
+app.use("*", cors({ origin: "*", credentials: true }));
 
-// Generate Tokens
+// Helper function to generate tokens
 const generateToken = (payload: Partial<User>, secret: string, expiresIn: number) => {
   return sign({ ...payload, exp: Math.floor(Date.now() / 1000) + expiresIn }, secret);
 };
 
-// Authentication Middleware
+// Authentication middleware
 const authenticateToken = async (c: any, next: any) => {
   const token = c.req.header("Authorization")?.split(" ")[1];
   if (!token) return c.json({ error: "Access token required" }, 401);
@@ -40,7 +41,7 @@ const authenticateToken = async (c: any, next: any) => {
   }
 };
 
-// Signup
+// Signup Route
 app.post("/auth/signup", async (c) => {
   const { email, password, username } = await c.req.json();
   if (!email || !password || !username) return c.json({ error: "Missing fields" }, 400);
@@ -61,7 +62,7 @@ app.post("/auth/signup", async (c) => {
   return c.json({ accessToken, user: { id: userId, email, username } });
 });
 
-// Login
+// Login Route
 app.post("/auth/login", async (c) => {
   const { email, password } = await c.req.json();
   const { results } = await c.env.DB.prepare("SELECT * FROM users WHERE email = ?").bind(email).all();
@@ -77,7 +78,7 @@ app.post("/auth/login", async (c) => {
   return c.json({ accessToken, user: { id: user.id, email, username: user.username } });
 });
 
-// Refresh Token
+// Refresh Token Route
 app.post("/auth/refresh", async (c) => {
   const refreshToken = c.req.cookie("refreshToken");
   if (!refreshToken) return c.json({ error: "Refresh token required" }, 400);
@@ -91,43 +92,40 @@ app.post("/auth/refresh", async (c) => {
   }
 });
 
-// Logout
+// Logout Route
 app.post("/auth/logout", async (c) => {
   c.header("Set-Cookie", "refreshToken=; HttpOnly; Secure; SameSite=Strict; Max-Age=0");
   return c.json({ success: true });
 });
 
 // Feedback Route
-app.post('/api/feedback', async (c) => {
-  const { email, message } = await c.req.json()
-  if (!email || !message) {
-    return c.json({ error: "Both 'email' and 'message' are required" }, 400)
-  }
-  const sheetyUrl =
-    'https://api.sheety.co/2870e9315faaeee780eaf2deae61d926/tskdFeedback/feedback'
+app.post("/api/feedback", async (c) => {
+  const { email, message } = await c.req.json();
+  if (!email || !message) return c.json({ error: "Both 'email' and 'message' are required" }, 400);
+
+  const sheetyUrl = "https://api.sheety.co/2870e9315faaeee780eaf2deae61d926/tskdFeedback/feedback";
+
   try {
     const response = await fetch(sheetyUrl, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${c.env.SHEETY_SECRET}`
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${c.env.SHEETY_SECRET}`,
       },
-      body: JSON.stringify({
-        feedback: { email, message }
-      })
-    })
+      body: JSON.stringify({ feedback: { email, message } }),
+    });
+
     if (!response.ok) {
-      const error = await response.json()
-      return c.json({
-        error: error.message || 'Failed to send feedback'
-      }, response.status)
+      const error = await response.json();
+      return c.json({ error: error.message || "Failed to send feedback" }, response.status);
     }
-    const data = await response.json()
-    return c.json({ success: true, feedback: data.feedback })
+
+    const data = await response.json();
+    return c.json({ success: true, feedback: data.feedback });
   } catch (err) {
-    return c.json({ error: 'Internal server error' }, 500)
+    return c.json({ error: "Internal server error" }, 500);
   }
-})
+});
 
 export default app;
 
