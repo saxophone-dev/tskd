@@ -58,9 +58,38 @@ app.post("/auth/signup", async (c) => {
   const accessToken = generateToken({ id: userId, email }, c.env.JWT_SECRET, 86400);
   const refreshToken = generateToken({ id: userId, email }, c.env.REFRESH_SECRET, 604800);
 
-  c.header("Set-Cookie", `refreshToken=${refreshToken}; HttpOnly; Secure; Partitioned; SameSite=None`);
+  let partitionedSupport = isBrowserVersionSupported(c.req.header('User-Agent'));
+
+  c.header("Set-Cookie", `refreshToken=${refreshToken}; HttpOnly; Secure; ${partitionedSupport ? 'Partitioned;' : ''}SameSite=None`);
   return c.json({ accessToken, user: { id: userId, email, username } });
 });
+
+// Helper function to test CHIPS support
+function isBrowserVersionSupported(userAgent) {
+  // Define browser regex patterns and minimum versions
+  const browsers = [
+    { name: "Chrome", regex: /Chrome\/([0-9]+)/, minVersion: 114 },
+    { name: "Edge", regex: /Edg\/([0-9]+)/, minVersion: 114 },
+    { name: "Firefox", regex: /Firefox\/([0-9]+)/, minVersion: 131 },
+    { name: "Opera", regex: /OPR\/([0-9]+)/, minVersion: 100 },
+    { name: "Chrome Android", regex: /Chrome\/([0-9]+).*Android/, minVersion: 114 },
+    { name: "Firefox Android", regex: /Firefox\/([0-9]+).*Android/, minVersion: 131 },
+    { name: "Opera Android", regex: /OPR\/([0-9]+).*Android/, minVersion: 74 },
+    { name: "Samsung Internet", regex: /SamsungBrowser\/([0-9.]+)/, minVersion: 23.0 }
+  ];
+
+  // Check the user agent against each browser
+  for (const browser of browsers) {
+    const match = userAgent.match(browser.regex);
+    if (match) {
+      const version = parseFloat(match[1]);
+      return version >= browser.minVersion;
+    }
+  }
+
+  // If no matching browser is found, return false
+  return false;
+}
 
 // Login Route
 app.post("/auth/login", async (c) => {
@@ -74,7 +103,9 @@ app.post("/auth/login", async (c) => {
   const accessToken = generateToken({ id: user.id, email }, c.env.JWT_SECRET, 86400);
   const refreshToken = generateToken({ id: user.id, email }, c.env.REFRESH_SECRET, 604800);
 
-  c.header("Set-Cookie", `refreshToken=${refreshToken}; HttpOnly; Secure; Partitioned; SameSite=None`);
+  let partitionedSupport = isBrowserVersionSupported(c.req.header('User-Agent'));
+
+  c.header("Set-Cookie", `refreshToken=${refreshToken}; HttpOnly; Secure; ${partitionedSupport ? 'Partitioned; ' : ''}SameSite=None`);
   return c.json({ accessToken, user: { id: user.id, email, username: user.username } });
 });
 
@@ -94,7 +125,9 @@ app.post("/auth/refresh", async (c) => {
 
 // Logout Route
 app.post("/auth/logout", async (c) => {
-  c.header("Set-Cookie", "refreshToken=; HttpOnly; Secure; Partitioned; SameSite=None; Max-Age=0");
+  let partitionedSupport = isBrowserVersionSupported(c.req.header('User-Agent'));
+
+  c.header("Set-Cookie", `refreshToken=; HttpOnly; Secure; ${partitionedSupport ? 'Partitioned; ' : ''}SameSite=None; Max-Age=0`);
   return c.json({ success: true });
 });
 
