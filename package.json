@@ -23,6 +23,7 @@
     "@tauri-apps/plugin-shell": "^2",
     "@types/zxcvbn": "^4.4.5",
     "axios": "^1.7.9",
+    "bcrypt-ts": "^5.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "jwt-decode": "^4.0.0",

@@ -9,7 +9,7 @@ import {
   AlertCircle,
   HelpCircle,
 } from "lucide-react";
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -24,7 +24,6 @@ import zxcvbn from "zxcvbn";
 import PriPol from "@/components/PriPol";
 import TermsOfService from "@/components/ToS";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router";
 
 // Constants
 const MIN_PASSWORD_STRENGTH = 3;
@@ -34,6 +33,8 @@ const EMAIL_REGEX =
 // Rate Limiting Configuration
 const RATE_LIMIT_WINDOW = 60000; // 1 minute
 const MAX_ATTEMPTS = 6;
+
+const { login, register } = useAuth();
 
 // Types
 interface PasswordStrengthInfo {
@@ -58,8 +59,6 @@ function Landing() {
   const [passwordStrengthInfo, setPasswordStrengthInfo] =
     useState<PasswordStrengthInfo | null>(null);
   const [isPasswordInfoOpen, setIsPasswordInfoOpen] = useState(false);
-  const { login, signup, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
 
   // Rate Limiting Ref
   const rateLimitRef = useRef<RateLimitState>({
@@ -74,13 +73,11 @@ function Landing() {
     const now = Date.now();
     const { attempts, lastAttemptTime } = rateLimitRef.current;
 
-    // Reset attempts if outside the rate limit window
     if (now - lastAttemptTime > RATE_LIMIT_WINDOW) {
       rateLimitRef.current = { attempts: 1, lastAttemptTime: now };
       return true;
     }
 
-    // Check if max attempts reached
     if (attempts >= MAX_ATTEMPTS) {
       toast({
         title: "Too Many Attempts",
@@ -90,19 +87,12 @@ function Landing() {
       return false;
     }
 
-    // Increment attempts
     rateLimitRef.current = {
       attempts: attempts + 1,
       lastAttemptTime: now,
     };
     return true;
   }, [toast]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/dashboard");
-    }
-  }, [isAuthenticated, navigate]);
 
   // Validate email format
   const validateEmail = (emailToValidate: string): boolean => {
@@ -128,11 +118,9 @@ function Landing() {
       return false;
     }
 
-    // Only check strength for signup
     if (!isLogin) {
       const result = zxcvbn(passwordToValidate);
 
-      // Use score for validation
       if (result.score < MIN_PASSWORD_STRENGTH) {
         setPasswordError("Password is too weak");
         setPasswordStrengthInfo({
@@ -152,7 +140,6 @@ function Landing() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Check rate limiting first
     if (!checkRateLimit()) {
       return;
     }
@@ -172,7 +159,7 @@ function Landing() {
       if (isLogin) {
         await login(email, password);
       } else {
-        await signup(email, password, username);
+        await register(email, password, username);
       }
 
       toast({
