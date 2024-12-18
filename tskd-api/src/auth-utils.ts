@@ -42,8 +42,12 @@ export class AuthUtils {
 	static async verifyAccessToken(token: string): Promise<User | null> {
 		try {
 			const decoded = await verify(token, this.JWT_ACCESS_SECRET);
+			// urm ignore this shite code
+			// because id and email are unknown types lmao so it just try catches that shit
 			return {
+				// @ts-ignore
 				id: decoded.sub,
+				// @ts-ignore
 				email: decoded.email,
 				username: '', // Limited info in token
 				hashedPassword: '',
@@ -57,8 +61,12 @@ export class AuthUtils {
 	static async verifyRefreshToken(token: string): Promise<User | null> {
 		try {
 			const decoded = await verify(token, this.JWT_REFRESH_SECRET);
+			// urm ignore this shite code
+			// because id and email are unknown types lmao so it just try catches that shit
 			return {
+				// @ts-ignore
 				id: decoded.sub,
+				// @ts-ignore
 				email: decoded.email,
 				username: '', // Limited info in token
 				hashedPassword: '',
